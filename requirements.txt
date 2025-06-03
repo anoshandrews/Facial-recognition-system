@@ -1,0 +1,45 @@
+# # Core
+# numpy
+# pandas
+# opencv-python
+# opencv-contrib-python
+# matplotlib
+# scikit-learn
+
+# # Face Recognition
+# tensorflow>=2.11.0
+# keras
+# keras-vggface
+# keras-applications
+# deepface
+# # Data Augmentation
+# imgaug
+# albumentations
+
+# # UI (optional)
+# streamlit
+
+# # Misc
+# tqdm
+# Pillow
+
+# # For saving/loading models
+# h5py
+# joblib
+
+# facenet-pytorch
+# dlib
+# imutils
+# keras-facenet
+# Core essentials
+numpy
+opencv-python
+
+# Optional utilities (recommended)
+imutils      # for resizing and drawing boxes easily
+tqdm         # for showing progress bars if batch processing images
+
+streamlit
+
+keras-facenet
+dlib
