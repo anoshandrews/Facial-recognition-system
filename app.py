@@ -6,10 +6,16 @@ from keras_facenet import FaceNet
 from PIL import Image
 import pickle
 import os
+import urllib.request
 
-# === Load models ===
-AGE_BUCKETS = ['(0-3)', '(4-8)', '(9-14)', '(15-20)','(20-24)', '(25-32)', '(38-43)', '(48-53)', '(60-100)']
+# === Setup Paths ===
+AGE_BUCKETS = ['(0-3)', '(4-8)', '(9-14)', '(15-20)', '(20-24)', '(25-32)', '(38-43)', '(48-53)', '(60-100)']
 GENDERS = ['Male', 'Female']
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, 'models')
+os.makedirs(MODEL_DIR, exist_ok=True)
+
+# Get the absolute path to the directory where this script lives
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Load Age and Gender models (assumed to be in the same directory as this script)
@@ -33,7 +39,7 @@ with open(os.path.join(BASE_DIR, 'knn_model.pkl'), "rb") as f:
 # Load Haar Cascade for face detection (uses OpenCV's built-in path)
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-# === Inference ===
+# === Inference Logic ===
 def predict_faces(image):
     results = []
     faces = face_cascade.detectMultiScale(image, scaleFactor=1.3, minNeighbors=5)
@@ -55,14 +61,13 @@ def predict_faces(image):
             pred_name = knn.predict(embedding)[0]
             prob = knn.predict_proba(embedding)[0].max()
             name_label = pred_name if prob > 0.6 else "Unknown"
-        except Exception as e:
+        except Exception:
             name_label = "Unknown"
 
         label = f"{name_label}, {gender}, {age}"
         results.append(((x, y, w, h), label))
 
     return results
-
 
 def draw_predictions(image, results):
     for (x, y, w, h), label in results:
@@ -71,8 +76,7 @@ def draw_predictions(image, results):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
     return image
 
-
-# === Streamlit UI ===
+# === Streamlit App ===
 st.title("🦊 Face Recognition System")
 
 mode = st.sidebar.radio("Choose input type:", ("Image", "Video", "Webcam"))
@@ -108,9 +112,8 @@ elif mode == "Video":
         cap.release()
 
 elif mode == "Webcam":
-    st.warning("⚠️ Webcam support only works if you're running this locally with `streamlit run app.py`.")
+    st.warning("⚠️ Webcam works only when running locally with `streamlit run app.py`.")
 
-    # Initialize webcam state
     if 'run_webcam' not in st.session_state:
         st.session_state['run_webcam'] = False
 
