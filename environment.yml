@@ -1,0 +1,12 @@
+channels:
+     - conda-forge
+dependencies:
+     - dlib
+     - numpy
+     - scipy
+     - opencv
+     - keras-facenet
+     - streamlit
+     - imutils      # for resizing and drawing boxes easily
+     - tqdm         # for showing progress bars if batch processing images
+
