@@ -19,7 +19,6 @@ Supports input from:
 ## 📂 Project Structure
 
 <pre>
-```text
 face_recognition_project/
 ├── app.py                      # Streamlit app
 ├── knn_model.pkl               # Trained KNN face recognition model
@@ -27,7 +26,6 @@ face_recognition_project/
 ├── age_deploy.prototxt         # Age model config
 ├── gender_net.caffemodel       # Pre-trained gender detection model
 ├── gender_deploy.prototxt      # Gender model config
-```
 </pre>
 ---
 
